@@ -1,11 +1,11 @@
-const baseURL = 'demo.once-ui.com'
+const baseURL = 'enriqriosf.com'
 
 // default customization applied to the HTML in the main layout.tsx
 const style = {
     theme:       'dark',        // dark | light
     neutral:     'gray',        // sand | gray | slate
-    brand:       'cyan',        // blue | indigo | violet | magenta | pink | red | orange | yellow | moss | green | emerald | aqua | cyan
-    accent:      'indigo',      // blue | indigo | violet | magenta | pink | red | orange | yellow | moss | green | emerald | aqua | cyan
+    brand:       'violet',      // blue | indigo | violet | magenta | pink | red | orange | yellow | moss | green | emerald | aqua | cyan
+    accent:      'cyan',        // blue | indigo | violet | magenta | pink | red | orange | yellow | moss | green | emerald | aqua | cyan
     solid:       'contrast',    // color | contrast
     solidStyle:  'flat',        // flat | plastic
     border:      'playful',     // rounded | playful | conservative
@@ -16,32 +16,31 @@ const style = {
 
 // default metadata
 const meta = {
-    title: 'Once UI - Your Personalized Design System for Next.js',
-    description: 'An open-source design system and component library for Next.js that emphasizes easy styling and accessibility in UI development.'
+    title: 'Enrique Ríos Flores | Portafolio de Proyectos IA',
+    description: 'Especialista en Inteligencia Artificial, automatización de procesos, integración de APIs y desarrollo de software.'
 }
 
 
 // default open graph data
 const og = {
-    title: 'Once UI for Next.js',
-    description: 'We let designers code and developers design.',
+    title: 'Enrique Ríos Flores | Portafolio IA',
+    description: 'Proyectos y experiencia en inteligencia artificial, automatización de procesos y desarrollo de software',
     type: 'website'
 }
 
 // default schema data
 const schema = {
     logo: '',
-    type: 'Organization',
-    name: 'One UI',
-    description: 'Once UI is an open-source design system and component library for Next.js.',
-    email: 'lorant@once-ui.com'
+    type: 'Person',
+    name: 'Enrique Ríos Flores',
+    description: 'Especialista en Inteligencia Artificial, automatización de procesos y desarrollo de software',
+    email: 'enrq.rios.f@gmail.com'
 }
 
 // social links
 const social = {
-    twitter: 'https://www.twitter.com/_onceui',
-    linkedin: 'https://www.linkedin.com/company/once-ui/',
-    discord: 'https://discord.com/invite/5EyAQ4eNdS'
+    github: 'https://github.com/Dkuaik',
+    linkedin: 'https://linkedin.com/in/enrqriosf'
 }
 
 export { baseURL, style, meta, og, schema, social };

@@ -1,0 +1,19 @@
+/* Custom styles for portfolio */
+
+.hover-scale:hover {
+  transform: scale(1.02);
+}
+
+.project-card {
+  transition: all 0.3s ease;
+}
+
+.project-card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+@media (prefers-reduced-motion) {
+  .hover-scale:hover {
+    transform: none;
+  }
+}

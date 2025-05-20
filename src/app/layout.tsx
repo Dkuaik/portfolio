@@ -1,5 +1,7 @@
 import "@/once-ui/styles/index.scss";
 import "@/once-ui/tokens/index.scss";
+import "./globals.css";
+import "./responsive.css";
 
 import classNames from 'classnames';
 import { headers } from "next/headers";
@@ -101,6 +103,7 @@ export default function RootLayout({
 					type="application/ld+json"
 					dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
 				/>
+				<script src="/js/animations.js" defer></script>
 			</head>
 			<Flex
 				as="body"

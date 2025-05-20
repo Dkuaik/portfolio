@@ -1,0 +1,94 @@
+/* Responsive styles for portfolio website */
+
+/* Medium devices (tablets, less than 992px) */
+@media (max-width: 991.98px) {
+  /* General adjustments */
+  h1 {
+    font-size: 3.2rem !important;
+  }
+  
+  h1 div {
+    font-size: 2.4rem !important;
+  }
+  
+  .section-header h2 {
+    font-size: 2.2rem !important;
+  }
+  
+  /* Layout adjustments */
+  header nav {
+    display: none !important;
+  }
+  
+  /* Add mobile menu button */
+  .mobile-menu-button {
+    display: flex !important;
+  }
+}
+
+/* Small devices (landscape phones, less than 768px) */
+@media (max-width: 767.98px) {
+  /* Text size adjustments */
+  h1 {
+    font-size: 2.8rem !important;
+  }
+  
+  h1 div {
+    font-size: 2rem !important;
+  }
+  
+  /* Content adjustments */
+  .profile-frame {
+    width: 280px !important;
+    height: 280px !important;
+  }
+  
+  /* Floating elements adjustments */
+  .floating-element {
+    display: none !important;
+  }
+  
+  /* Padding adjustments */
+  [style*="padding"] {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+}
+
+/* Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+  /* Further text size reduction */
+  h1 {
+    font-size: 2.3rem !important;
+    margin-bottom: 16px !important;
+  }
+  
+  h1 div {
+    font-size: 1.7rem !important;
+  }
+  
+  /* Content reorganization */
+  .profile-frame {
+    width: 220px !important;
+    height: 220px !important;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  /* Skills bars adjustments */
+  .skill-name {
+    font-size: 0.9rem !important;
+  }
+  
+  /* Button adjustments */
+  button, a[role="button"] {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    font-size: 0.9rem !important;
+  }
+  
+  /* Projects grid adjustments */
+  .projectList {
+    grid-template-columns: 1fr !important;
+  }
+}
