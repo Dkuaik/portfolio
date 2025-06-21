@@ -9,10 +9,11 @@ import { Metadata } from "next";
 
 import { baseURL, style, meta, og, schema, social } from "@/once-ui/resources/config"
 
-import { Background, Flex } from '@/once-ui/components'
+import { Flex } from '@/once-ui/components'
 
 import { Inter } from 'next/font/google'
 import { Roboto_Mono } from 'next/font/google';
+import ChatBot from "@/app/components/ChatBot/ChatBot";
 
 const primary = Inter({
 	variable: '--font-primary',
@@ -108,22 +109,10 @@ export default function RootLayout({
 			<Flex
 				as="body"
 				fillWidth fillHeight margin="0" padding="0">
-				<Background
-					style={{zIndex: '-1'}}
-					position="fixed"
-					mask="cursor"
-					dots={{
-						display: true,
-						opacity: 0.4,
-						size: '20'
-					}}
-					gradient={{
-						display: true,
-						opacity: 0.4,
-					}}/>
 				<Flex
 					flex={1} direction="column">
 					{children}
+					<ChatBot />
 				</Flex>
 			</Flex>
 		</Flex>
