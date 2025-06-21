@@ -17,7 +17,7 @@ const Portfolio = ({ isLoaded }: { isLoaded: boolean }) => {
                 position: "relative",
                 zIndex: 1,
                 opacity: isLoaded ? 1 : 0,
-                transform: isLoaded ? "translateY(0)" : "translateY(20px)",
+                transform: isLoaded ? "translateY(0)" : "translateY(-10px)",
                 transition: "all 0.8s ease-out 0.6s",
             }}
         >

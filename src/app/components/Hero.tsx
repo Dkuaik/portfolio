@@ -87,18 +87,18 @@ const Hero = ({ isLoaded }: { isLoaded: boolean }) => {
                         </div>
                     </div>
                 </div>
-                <div className="floating-element floating-circle-1">
-                    <div className="floating-element-content"><Icon name="chevronRight" size="m" style={{ color: "#60a5fa" }} /></div>
-                </div>
-                <div className="floating-element floating-hexagon">
+                {/* GitHub - Posición bubble-1 */}
+                <a href={SOCIALS[0].href} target="_blank" rel="noopener noreferrer" className="floating-bubble bubble-1 floating-social" title={SOCIALS[0].label}>
                     <div className="floating-element-content"><Icon name="github" size="m" style={{ color: "#60a5fa" }} /></div>
-                </div>
-                <div className="floating-element floating-pill">
-                    <div className="floating-element-content"><Icon name="openLink" size="m" style={{ color: "#60a5fa" }} /></div>
-                </div>
-                <div className="floating-bubble bubble-1"></div>
-                <div className="floating-bubble bubble-2"></div>
-                <div className="floating-bubble bubble-3"></div>
+                </a>
+                {/* LinkedIn - Posición bubble-2 */}
+                <a href={SOCIALS[1].href} target="_blank" rel="noopener noreferrer" className="floating-bubble bubble-2 floating-social" title={SOCIALS[1].label}>
+                    <div className="floating-element-content"><Icon name="linkedin" size="m" style={{ color: "#60a5fa" }} /></div>
+                </a>
+                {/* Email - Posición bubble-3 */}
+                <a href={SOCIALS[2].href} className="floating-bubble bubble-3 floating-social" title={SOCIALS[2].label}>
+                    <div className="floating-element-content"><Icon name="email" size="m" style={{ color: "#60a5fa" }} /></div>
+                </a>
             </Flex>
             <Flex
                 direction="column"
