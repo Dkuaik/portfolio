@@ -27,7 +27,8 @@ const Portfolio = ({ isLoaded }: { isLoaded: boolean }) => {
                         title: "Asistente IA para análisis de datos",
                         description: "Desarrollo de un asistente inteligente para el análisis y visualización automática de datos empresariales.",
                         tags: ["Python", "IA", "Análisis de Datos"],
-                        image: "/images/project1.jpg"
+                        image: "/images/project1.jpg",
+                        url: "https://www.indavarealestate.com/",
                     },
                     {
                         title: "Sistema de automatización de procesos",

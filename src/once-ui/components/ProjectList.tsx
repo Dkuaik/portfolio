@@ -9,6 +9,7 @@ export interface Project {
   image?: string;
   tags?: string[];
   category?: string;
+  url?: string;
 }
 
 interface ProjectListProps {
