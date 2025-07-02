@@ -82,6 +82,19 @@ const ProjectList: React.FC<ProjectListProps> = ({ projects }) => {
                     Ver proyecto <Icon name="arrowUpRight" size="s" />
                   </a>
                 )}
+                {
+                  project.repository && (
+                    <a
+                      href={project.repository}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.projectLink}
+                      style={{ float: "right" }}
+                    >
+                      Ver repositorio <Icon name="github" size="s" />
+                    </a>
+                  )
+                }
               </div>
               
               <div className={styles.projectBorder}></div>

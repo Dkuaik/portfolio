@@ -21,14 +21,38 @@ import {
 	HiCheckCircle,
 	HiChatBubbleLeftRight,
 	HiPaperAirplane,
+	HiArrowDownTray,
+	HiCpuChip,
+	HiCircleStack,
+	HiCloudArrowUp,
+	HiCodeBracket,
+	HiCommandLine,
 } from "react-icons/hi2";
 
 import {
 	FaDiscord,
 	FaGithub,
 	FaLinkedinIn as FaLinkedin,
-	FaEnvelope
+	FaEnvelope,
+	FaPython,
+	FaReact,
+	FaNodeJs,
+	FaDocker,
+	FaAws,
+	FaGitAlt,
+	FaRobot,
 } from "react-icons/fa6";
+
+import {
+	SiTypescript,
+	SiJavascript,
+	SiNextdotjs,
+	SiFastapi,
+	SiPostgresql,
+	SiMongodb,
+	SiOpenai,
+	SiLangchain,
+} from "react-icons/si";
 
 export const iconLibrary: Record<string, IconType> = {
 	chevronUp: HiChevronUp,
@@ -55,4 +79,26 @@ export const iconLibrary: Record<string, IconType> = {
 	plus: HiMiniPlus,
 	chat: HiChatBubbleLeftRight,
 	send: HiPaperAirplane,
+	download: HiArrowDownTray,
+	robot: FaRobot,
+	// Tech Stack Icons
+	cpu: HiCpuChip,
+	database: HiCircleStack,
+	cloud: HiCloudArrowUp,
+	code: HiCodeBracket,
+	terminal: HiCommandLine,
+	python: FaPython,
+	react: FaReact,
+	nodejs: FaNodeJs,
+	docker: FaDocker,
+	aws: FaAws,
+	git: FaGitAlt,
+	typescript: SiTypescript,
+	javascript: SiJavascript,
+	nextjs: SiNextdotjs,
+	fastapi: SiFastapi,
+	postgresql: SiPostgresql,
+	mongodb: SiMongodb,
+	openai: SiOpenai,
+	langchain: SiLangchain,
 };

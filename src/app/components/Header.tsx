@@ -1,13 +1,15 @@
 "use client";
-import { Icon } from "@/once-ui/components";
+import { Icon, Button } from "@/once-ui/components";
 import React, { useState } from "react";
 
 const Header = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
 
     const toggleMobileMenu = () => {
         setIsMobileMenuOpen(!isMobileMenuOpen);
     };
+    const toggleLangMenu = () => setIsLangMenuOpen(!isLangMenuOpen);
 
     return (
         <header
@@ -71,12 +73,56 @@ const Header = () => {
                 style={{
                     display: "flex",
                     gap: "1.5rem",
+                    alignItems: "center",
+                    fontSize: "0.95rem",
+                    fontWeight: 500,
+                    color: "#fff",
+                    opacity: 0.9,
+                    transition: "all 0.2s ease",
                 }}
             >
-                <a href="#home" style={{ color: "#fff", textDecoration: "none", fontWeight: 500, fontSize: "0.95rem", opacity: 0.9, transition: "all 0.2s ease" }}>Inicio</a>
-                <a href="#about" style={{ color: "#fff", textDecoration: "none", fontWeight: 500, fontSize: "0.95rem", opacity: 0.7, transition: "all 0.2s ease" }}>Sobre mí</a>
-                <a href="#portfolio" style={{ color: "#fff", textDecoration: "none", fontWeight: 500, fontSize: "0.95rem", opacity: 0.7, transition: "all 0.2s ease" }}>Proyectos</a>
-                <a href="#contact" style={{ color: "#fff", textDecoration: "none", fontWeight: 500, fontSize: "0.95rem", opacity: 0.7, transition: "all 0.2s ease" }}>Contacto</a>
+                <a href="#home" >Inicio</a>
+                <a href="#about" >Sobre mí</a>
+                <a href="#portfolio" >Proyectos</a>
+                <a href="#contact" >Contacto</a>
+
+                {/* CV language selector */}
+                <div style={{ position: "relative" }}>
+                    <Button
+                        variant="secondary"
+                        onClick={toggleLangMenu}
+                        style={{
+                            background: "rgba(96, 165, 250, 0.1)",
+                            border: "1px solid rgba(96, 165, 250, 0.3)",
+                            color: "#60a5fa",
+                            fontWeight: 600,
+                            padding: "0.6rem 1rem",
+                            borderRadius: "8px",
+                            fontSize: "0.9rem",
+                            transition: "all 0.2s ease",
+                        }}
+                        prefixIcon="download"
+                    >
+                        CV
+                    </Button>
+                    {isLangMenuOpen && (
+                        <div style={{
+                            position: "absolute",
+                            top: "110%",
+                            left: 0,
+                            background: "rgba(18,20,25,0.95)",
+                            border: "1px solid rgba(255,255,255,0.1)",
+                            borderRadius: "8px",
+                            padding: "0.5rem 0",
+                            display: "flex",
+                            flexDirection: "column",
+                            zIndex: 20,
+                        }}>
+                            <a href="/cv/CV_Enrique_Rios_Flores_spanish.pdf" target="_blank" style={{ color: "#fff", textDecoration: "none", padding: "0.5rem 1rem", fontSize: "0.9rem" }}>Español</a>
+                            <a href="/cv/CV_Enrique_Rios_Flores_english.pdf" target="_blank" style={{ color: "#fff", textDecoration: "none", padding: "0.5rem 1rem", fontSize: "0.9rem" }}>Inglés</a>
+                        </div>
+                    )}
+                </div>
             </nav>
 
             <div 

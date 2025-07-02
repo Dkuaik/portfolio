@@ -1,48 +1,167 @@
-# **Once UI for Next.js**
+# Portafolio Personal de Enrique Ríos Flores
 
-<span style="font-size: 22px;">Once UI is a lightweight, versatile design system with easy customization and practical components.
-<br>
+> **Arquitectura:** Aplicación web monorepo basada en Next.js (frontend) y servicios serverless (backend) para IA.
 
-![Once UI](public/images/cover.png)
+Este proyecto está organizado en dos capas principales:
 
-<span style="font-size: 18px;">Start building your Next.js app in minutes with:</span> 
-* **A robust token and style system** that simplifies customization and ensures consistency. 
-* **A copy-and-paste component library** that integrates seamlessly into your project.
-* **Interactive documentation** to apply your branding and set component properties.
-<br><br>
+1. **Frontend** (`src/app` + `src/once-ui`):
+   - Construido con **Next.js 14** y **React** (client components y server components).
+   - **UI** implementada con componentes reutilizables de **Once UI** (React + SCSS Modules).
+   - **Estilos** gestionados con Sass y CSS Modules para encapsular estilos por componente.
+   - **Optimización de imágenes** mediante el componente `Image` de Next.js (lazy-loading, `priority`, `quality=100`).
 
-# **Documentation**
-The documentation is available at [once-ui.com/docs](https://once-ui.com/docs).
-<br><br>
+2. **Backend / Services** (`src/services` + API routes):
+   - ChatBot potenciado por **OpenRouterService**, que orquesta las llamadas a la API de OpenAI.
+   - No requiere servidor dedicado: usa **API Routes** de Next.js o despliegue serverless en Vercel.
+   - Manejo de historial de conversaciones y throttling básico en el cliente.
 
-# **Authors**
-Connect with us!
+---
 
-Lorant One: [Site](https://lorant.one), [Threads](https://www.threads.net/@lorant.one), [LinkedIn](https://www.linkedin.com/in/lorant-one/)  
-Zsofia Komaromi: [Site](https://zsofia.pro), [Threads](https://www.threads.net/@zsofia_kom), [LinkedIn](https://www.linkedin.com/in/zsofiakomaromi/)
-<br><br>
+## 🚀 Stack Tecnológico
 
-# **Get involved**
-- Join the [Design Engineers Club](https://discord.com/invite/5EyAQ4eNdS) on Discord to connect with designers, developers and share your projects.
-- Report a [bug](https://github.com/once-ui-system/nextjs-starter/issues/new?labels=bug&template=bug_report.md).
-- Submit a [feature request](https://github.com/once-ui-system/nextjs-starter/issues/new?labels=feature%20request&template=feature_request.md).
-<br><br>
+| Capa       | Tecnología                          |
+| ---------- | ----------------------------------- |
+| Framework  | Next.js 14 (App Router, SSR/SSG)    |
+| Lenguaje   | TypeScript                          |
+| UI         | React (Client / Server components)  |
+| Componentes| Once UI (SCSS Modules)              |
+| Estilos    | Sass, CSS Modules                   |
+| Icons      | React Icons (Heroicons, Font Awesome)|
+| Imágenes   | `next/image`                        |
+| ChatBot    | OpenRouterService / OpenAI API      |
+| Despliegue | Vercel (Serverless Functions/API)   |
 
-# **License**
+---
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
-<br><br>
+## 🏗️ Backend
 
-# **Once UI for Figma**
+Este backend API inteligente está diseñado para ser la columna vertebral de un portafolio personal/profesional que utiliza búsqueda semántica con IA para encontrar información relevante en documentos Markdown almacenados en la nube.
 
-Once UI is also available for Figma.  
-Design and prototype entire products from scratch in hours. Use the same tokens and components as the Next.js design system.
+**Arquitectura y Tecnologías**
 
-Grab a copy from the [Figma Community](https://figma.com/).
-<br><br>
+- **Core Framework**: FastAPI (Python 3.12+), Uvicorn ASGI, UV (gestor de paquetes).
+- **IA y ML**: OpenAI Embeddings (text-embedding-3-small), LangChain, FAISS, Semantic Search.
+- **Almacenamiento**: Amazon S3 para archivos Markdown, JSON para metadatos, índice vectorial local.
+- **DevOps**: Docker para containerización, CORS configurado para integración con el frontend.
 
-# **Deploy your project**
+**Funcionalidades principales**
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/76DR9Q?referralCode=QW2HBC)
+1. Procesamiento inteligente de documentos (chunking optimizado y generación de embeddings).
+2. API de búsqueda semántica con endpoints RESTful para consultas en lenguaje natural.
+3. Sistema de caché inteligente (hash-based caching, actualizaciones incrementales, almacenamiento persistente del índice).
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fonce-ui-system%2Fnextjs-starter&redirect-url=https%3A%2F%2Fonce-ui.com%2Fdocs%2F)
+**Estructura del proyecto**
+
+```
+portfolio-backend/
+├── app/
+│   ├── main.py
+│   ├── embeddings_maker.py
+│   └── ...
+├── Dockerfile
+├── requirements.txt
+└── README.md
+```
+
+**Flujo de trabajo**
+
+1. **Ingesta**: Archivos `.md` se almacenan en S3.
+2. **Procesamiento**: `embeddings_maker.py` convierte el contenido en vectores.
+3. **Indexación**: FAISS crea un índice buscable.
+4. **API**: FastAPI expone endpoints para búsquedas semánticas.
+5. **Frontend**: Consume la API para mostrar resultados y respuestas en la interfaz de usuario.
+
+**Configuración**
+
+Variables de entorno necesarias:
+
+- `OPENAI_API_KEY` para generar embeddings.
+- `S3_ACCESS_KEY` / `S3_SECRET_KEY` para acceso a S3.
+- Parámetros de chunking, umbrales de similaridad y configuraciones adicionales.
+
+**Caso de uso**
+
+Los visitantes pueden hacer preguntas en lenguaje natural sobre proyectos y documentos, y obtener respuestas contextuales basadas en la similaridad semántica, incluso si no se mencionan explícitamente ciertos términos. Por ejemplo: _“¿Qué proyectos has hecho con React?”_.
+
+---
+
+## 🔗 Comunicación Frontend-Backend
+
+El frontend construido con Next.js se comunica con el backend inteligente basado en FastAPI mediante peticiones RESTful. El flujo de datos es el siguiente:
+
+1. El usuario realiza una consulta en el componente ChatBot o a través de búsquedas avanzadas.
+2. El frontend envía la petición al endpoint del backend (por ejemplo, `/api/search` o la URL de la API de FastAPI).
+3. FastAPI recibe la solicitud, orquesta la lógica de búsqueda semántica usando LangChain, FAISS y embeddings de OpenAI.
+4. El backend devuelve los resultados en formato JSON, incluyendo respuestas contextuales y metadatos.
+5. El componente UI procesa y renderiza los resultados de forma interactiva para el usuario.
+
+Este diseño separa claramente las responsabilidades de UI y lógica de negocio/IA, facilitando la escalabilidad y mantenibilidad.
+
+---
+
+## 📁 Estructura de Carpetas
+
+```
+├─ public/
+│  ├─ images/           # Activos estáticos
+│  └─ cv/               # PDFs de CV (ES / EN)
+├─ src/
+│  ├─ app/              # Rutas de Next.js (Front-end)
+│  ├─ once-ui/          # Biblioteca de componentes UI internos
+│  ├─ services/         # Lógica de negocio / integración con APIs
+│  │   └─ OpenRouterService.ts
+│  └─ constants.ts      # Variables globales (SOCIALS, etc.)
+├─ next.config.mjs      # Configuración Next.js
+├─ package.json         # Dependencias y scripts
+├─ tsconfig.json        # Configuración TypeScript
+└─ README.md            # Documentación del proyecto
+```
+
+---
+
+## ⚙️ Cómo Ejecutar en Local
+
+1. **Clonar el repositorio**
+   ```bash
+   git clone https://github.com/Dkuaik/portfolio.git
+   cd portfolio
+   ```
+
+2. **Instalar dependencias**
+   ```bash
+   npm install
+   ```
+
+3. **Configurar variables de entorno**
+   Crea `.env.local` en la raíz con tu clave de API de OpenRouter (OpenAI).
+   ```ini
+   NEXT_PUBLIC_OPENROUTER_API_KEY=tu_api_key
+   ```
+
+4. **Levantar servidor de desarrollo**
+   ```bash
+   npm run dev
+   ```
+
+5. **Abrir en el navegador**
+   > http://localhost:3000
+
+---
+
+## ✨ Características Destacadas
+
+- **Hero interactivo** con efecto _mouse-following glow_ y animaciones de texto (RevealFx).
+- **Stack Tecnológico** mostrado con iconos y badges interactivos.
+- **ChatBot** integrado en UI con historial de conversación y respuestas en tiempo real.
+- **Responsive Design**: adaptado a dispositivos _desktop_, _tablet_ y _mobile_.
+- **Componentes Reutilizables**: Once UI proporciona flex, botones, diálogos, inputs, etc.
+
+---
+
+## 📄 Licencia
+
+Este proyecto está bajo la [Licencia MIT](LICENSE).
+
+---
+
+> Construido con ❤️ por Enrique Ríos Flores

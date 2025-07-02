@@ -21,6 +21,7 @@ interface ConversationMessage {
 
 const ChatBot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showWelcomeMessage, setShowWelcomeMessage] = useState(true);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -280,6 +281,22 @@ const ChatBot: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Welcome Message */}
+      {!isOpen && showWelcomeMessage && (
+        <div className={styles.welcomeMessage}>
+          <button 
+            className={styles.welcomeCloseButton}
+            onClick={() => setShowWelcomeMessage(false)}
+            aria-label="Cerrar mensaje"
+          >
+            <Icon name="close" size="xs" />
+          </button>
+          <Icon name="robot" size="m" style={{ marginRight: 8, verticalAlign: 'middle' }} />
+          <p style={{ display: 'inline' }}>¿Tienes alguna duda sobre algo? ¡Pregúntame, yo te puedo responder!</p>
+          <div className={styles.welcomeArrow}>↓</div>
+        </div>
+      )}
 
       {/* Floating Button */}
       <button
