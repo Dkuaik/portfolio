@@ -17,14 +17,14 @@ const style = {
 // default metadata
 const meta = {
     title: 'Enrique Ríos Flores | Portafolio de Proyectos IA',
-    description: 'Especialista en Inteligencia Artificial, automatización de procesos, integración de APIs y desarrollo de software.'
+    description: 'Físico matemático especializado en IA, automatización de procesos, integración de APIs y desarrollo de software.'
 }
 
 
 // default open graph data
 const og = {
     title: 'Enrique Ríos Flores | Portafolio IA',
-    description: 'Proyectos y experiencia en inteligencia artificial, automatización de procesos y desarrollo de software',
+    description: 'Proyectos y experiencia de un físico matemático especializado en IA, automatización de procesos y desarrollo de software',
     type: 'website'
 }
 
@@ -33,7 +33,7 @@ const schema = {
     logo: '',
     type: 'Person',
     name: 'Enrique Ríos Flores',
-    description: 'Especialista en Inteligencia Artificial, automatización de procesos y desarrollo de software',
+    description: 'Físico matemático especializado en IA, automatización de procesos y desarrollo de software',
     email: 'enrq.rios.f@gmail.com'
 }
 
