@@ -21,7 +21,7 @@ const Hero = ({ isLoaded }: { isLoaded: boolean }) => {
                 
                 // Crear el efecto glow en todo el hero
                 heroRef.current.style.background = 
-                    `radial-gradient(circle at ${x}% ${y}%, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.05) 40%, transparent 70%)`;
+                    `radial-gradient(circle at ${x}% ${y}%, rgba(0, 0, 0, 0.15) 0%, rgba(59, 130, 246, 0.05) 40%, transparent 70%)`;
             }
         };
 
@@ -72,6 +72,7 @@ const Hero = ({ isLoaded }: { isLoaded: boolean }) => {
                 opacity: isLoaded ? 1 : 0,
                 transform: isLoaded ? "translateY(0)" : "translateY(20px)",
                 transition: "all 0.8s ease-out",
+                
             }}
         >
             <RevealFx>
@@ -423,7 +424,8 @@ const Hero = ({ isLoaded }: { isLoaded: boolean }) => {
                 zIndex: 1,
                 transition: "background 0.3s ease",
                 minHeight: "100vh",
-                background: "black"
+                background: "transparent",
+                overflow: "hidden",
             }}
         >
             <div style={{ 
@@ -431,7 +433,8 @@ const Hero = ({ isLoaded }: { isLoaded: boolean }) => {
                 maxWidth: "1400px", 
                 margin: "0 auto", 
                 display: "flex", 
-                alignItems: "stretch" 
+                alignItems: "stretch" , 
+                background: "transparent"
             }}>
                 <LeftSection />
                 <CenterSection />
