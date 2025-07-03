@@ -9,7 +9,7 @@ const About = () => {
            
             <p style={{ marginBottom: "1.5rem", textAlign: "center" }}>
                 Soy <strong>Enrique Ríos Flores</strong>, físico matemático especializado en IA y licenciado en Físico-Matemáticas 
-                apasionado por convertir problemas complejos en soluciones tecnológicas de alto impacto.
+                entusiasta por convertir problemas complejos en soluciones tecnológicas de alto impacto.
             </p>
             
             <p style={{ marginBottom: "1.5rem", textAlign: "center" }}>
