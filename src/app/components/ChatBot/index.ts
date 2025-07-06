@@ -1,6 +1,6 @@
 // Exportaciones principales del módulo ChatBot
 export { default as ChatBot } from './ChatBotWrapper';
-export { OpenRouterService } from './OpenRouterService';
+export { EmbeddingService } from './EmbeddingService';
 
 // Tipos compartidos
 export interface ConversationMessage {

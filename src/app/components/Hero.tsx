@@ -21,7 +21,7 @@ const Hero = ({ isLoaded }: { isLoaded: boolean }) => {
                 
                 // Crear el efecto glow en todo el hero
                 heroRef.current.style.background = 
-                    `radial-gradient(circle at ${x}% ${y}%, rgba(0, 0, 0, 0.15) 0%, rgba(59, 130, 246, 0.05) 40%, transparent 70%)`;
+                    `radial-gradient(circle at ${x}% ${y}%, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.05) 40%, transparent 70%)`;
             }
         };
 
@@ -72,7 +72,6 @@ const Hero = ({ isLoaded }: { isLoaded: boolean }) => {
                 opacity: isLoaded ? 1 : 0,
                 transform: isLoaded ? "translateY(0)" : "translateY(20px)",
                 transition: "all 0.8s ease-out",
-                
             }}
         >
             <RevealFx>
@@ -267,10 +266,7 @@ const Hero = ({ isLoaded }: { isLoaded: boolean }) => {
                     { name: "OpenAI API", icon: "openai" },
                     { name: "LangChain", icon: "langchain" },
                     { name: "Machine Learning", icon: "cpu" },
-                    { name: "NLP", icon: "cpu" },
-                    { name: "scikit-learn", icon: "python" },
-                    { name: "Pandas", icon: "python" },
-                    { name: "NumPy", icon: "python" }
+                    { name: "NLP", icon: "cpu" }
                 ]
             },
             { 
@@ -309,8 +305,7 @@ const Hero = ({ isLoaded }: { isLoaded: boolean }) => {
                     { name: "AWS", icon: "aws" },
                     { name: "Docker", icon: "docker" },
                     { name: "Git", icon: "git" },
-                    { name: "Automation", icon: "cpu" },
-                    { name: "VPS", icon: "cloud" }
+                    { name: "Automation", icon: "cpu" }
                 ]
             }
         ];
@@ -322,7 +317,7 @@ const Hero = ({ isLoaded }: { isLoaded: boolean }) => {
                 alignItems="flex-start"
                 style={{
                     flex: 2,
-                    padding: "1rem",
+                    padding: "2rem",
                     maxWidth: 420,
                     opacity: isLoaded ? 1 : 0,
                     transform: isLoaded ? "translateY(0)" : "translateY(20px)",
@@ -404,7 +399,27 @@ const Hero = ({ isLoaded }: { isLoaded: boolean }) => {
                     </RevealFx>
                 ))}
                 
-                
+                <RevealFx delay={1.2}>
+                    <Button
+                        variant="secondary"
+                        href="/cv/CV_Enrique_Rios_Flores_english.pdf"
+                        target="_blank"
+                        style={{
+                            marginTop: "1rem",
+                            background: "rgba(96, 165, 250, 0.1)",
+                            border: "1px solid rgba(96, 165, 250, 0.3)",
+                            color: "#60a5fa",
+                            fontWeight: 600,
+                            padding: "0.8rem 1.5rem",
+                            borderRadius: "10px",
+                            transition: "all 0.3s ease",
+                            fontSize: "0.9rem"
+                        }}
+                        prefixIcon="download"
+                    >
+                        Descargar CV
+                    </Button>
+                </RevealFx>
             </Flex>
         );
     };
@@ -424,8 +439,7 @@ const Hero = ({ isLoaded }: { isLoaded: boolean }) => {
                 zIndex: 1,
                 transition: "background 0.3s ease",
                 minHeight: "100vh",
-                background: "transparent",
-                overflow: "hidden",
+                background: "black"
             }}
         >
             <div style={{ 
@@ -433,8 +447,7 @@ const Hero = ({ isLoaded }: { isLoaded: boolean }) => {
                 maxWidth: "1400px", 
                 margin: "0 auto", 
                 display: "flex", 
-                alignItems: "stretch" , 
-                background: "transparent"
+                alignItems: "stretch" 
             }}>
                 <LeftSection />
                 <CenterSection />

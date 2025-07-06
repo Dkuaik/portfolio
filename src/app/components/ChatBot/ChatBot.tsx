@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Icon } from '@/once-ui/components';
-import { OpenRouterService } from './OpenRouterService';
+import { EmbeddingService } from './EmbeddingService';
 import styles from './ChatBot.module.scss';
 
 interface Message {
@@ -12,6 +12,8 @@ interface Message {
   text: string;
   sender: 'user' | 'bot';
   timestamp: Date;
+  sourcesCount?: number; // número de fuentes de contexto
+  contextSources?: Array<{ source: string; key: string; score: number }>; // información detallada de las fuentes
 }
 
 interface ConversationMessage {
@@ -35,11 +37,11 @@ const ChatBot: React.FC = () => {
   const [conversationHistory, setConversationHistory] = useState<ConversationMessage[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
-  const openRouterService = useRef<OpenRouterService | null>(null);
+  const embeddingService = useRef<EmbeddingService | null>(null);
 
-  // Inicializar el servicio de OpenRouter
+  // Inicializar el servicio de embeddings
   useEffect(() => {
-    openRouterService.current = new OpenRouterService();
+    embeddingService.current = new EmbeddingService();
   }, []);
 
   const scrollToBottom = () => {
@@ -68,7 +70,7 @@ const ChatBot: React.FC = () => {
   }, [isOpen]);
 
   const handleSendMessage = async () => {
-    if (!inputValue.trim() || !openRouterService.current) return;
+    if (!inputValue.trim() || !embeddingService.current) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -88,17 +90,23 @@ const ChatBot: React.FC = () => {
     setIsTyping(true);
 
     try {
-      // Obtener respuesta del modelo de lenguaje
-      const response = await openRouterService.current.sendMessage(
-        userMessage.text,
-        conversationHistory
+      // Llamar al nuevo servicio de embeddings
+      const chatResp = await embeddingService.current.chat(
+        userMessage.text
       );
+      // Construir texto de respuesta sin mostrar el contexto en el texto
+      let responseText: string;
+      if (chatResp.success) {
+        responseText = chatResp.response;
+      } else {
+        responseText = `Error: ${chatResp.error || 'Desconocido'}`;
+      }
 
       // Actualizar historial de conversación
       const newHistory: ConversationMessage[] = [
         ...conversationHistory,
         { role: 'user', content: userMessage.text },
-        { role: 'assistant', content: response }
+        { role: 'assistant', content: responseText }
       ];
       
       // Mantener solo los últimos 10 intercambios para no exceder límites
@@ -110,9 +118,11 @@ const ChatBot: React.FC = () => {
 
       const botResponse: Message = {
         id: (Date.now() + 1).toString(),
-        text: response,
+        text: responseText,
         sender: 'bot',
-        timestamp: new Date()
+        timestamp: new Date(),
+        sourcesCount: chatResp.success ? (chatResp.context_used.sources?.length ?? 0) : 0,
+        contextSources: chatResp.success ? chatResp.context_used.sources : undefined
       };
       
       setMessages(prev => [...prev, botResponse]);
@@ -176,71 +186,90 @@ const ChatBot: React.FC = () => {
               }`}
             >
               {message.sender === 'bot' ? (
+                <>
                 <ReactMarkdown
-                  remarkPlugins={[remarkGfm]}
-                  components={{
-                    // Customizar componentes para que se vean bien en el chat
-                    p: ({ children }) => <p style={{ margin: '0 0 8px 0' }}>{children}</p>,
-                    h1: ({ children }) => <h1 style={{ fontSize: '1.2em', margin: '8px 0 4px 0', fontWeight: 'bold' }}>{children}</h1>,
-                    h2: ({ children }) => <h2 style={{ fontSize: '1.1em', margin: '6px 0 4px 0', fontWeight: 'bold' }}>{children}</h2>,
-                    h3: ({ children }) => <h3 style={{ fontSize: '1em', margin: '4px 0 2px 0', fontWeight: 'bold' }}>{children}</h3>,
-                    ul: ({ children }) => <ul style={{ margin: '4px 0', paddingLeft: '16px' }}>{children}</ul>,
-                    ol: ({ children }) => <ol style={{ margin: '4px 0', paddingLeft: '16px' }}>{children}</ol>,
-                    li: ({ children }) => <li style={{ margin: '2px 0' }}>{children}</li>,
-                    code: ({ children, className }) => {
-                      const isInline = !className;
-                      return isInline ? (
-                        <code style={{ 
-                          backgroundColor: 'var(--neutral-background-strong)', 
-                          padding: '2px 4px', 
-                          borderRadius: '3px',
-                          fontSize: '0.9em',
-                          fontFamily: 'var(--font-code)'
-                        }}>{children}</code>
-                      ) : (
-                        <pre style={{ 
-                          backgroundColor: 'var(--neutral-background-strong)', 
-                          padding: '8px', 
-                          borderRadius: '6px',
-                          overflow: 'auto',
-                          fontSize: '0.85em',
-                          fontFamily: 'var(--font-code)'
-                        }}>
-                          <code>{children}</code>
-                        </pre>
-                      );
-                    },
-                    blockquote: ({ children }) => (
-                      <blockquote style={{ 
-                        borderLeft: '3px solid var(--brand-solid-medium)', 
-                        paddingLeft: '12px', 
-                        margin: '8px 0',
-                        fontStyle: 'italic',
-                        opacity: 0.9
-                      }}>{children}</blockquote>
-                    ),
-                    strong: ({ children }) => <strong style={{ fontWeight: 'bold' }}>{children}</strong>,
-                    em: ({ children }) => <em style={{ fontStyle: 'italic' }}>{children}</em>,
-                    a: ({ href, children }) => (
-                      <a 
-                        href={href} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        style={{ 
-                          color: 'var(--brand-solid-medium)', 
-                          textDecoration: 'underline' 
-                        }}
-                      >
-                        {children}
-                      </a>
-                    )
-                  }}
-                >
-                  {message.text}
-                </ReactMarkdown>
-              ) : (
-                message.text
-              )}
+                   remarkPlugins={[remarkGfm]}
+                   components={{
+                     // Customizar componentes para que se vean bien en el chat
+                     p: ({ children }) => <p style={{ margin: '0 0 8px 0' }}>{children}</p>,
+                     h1: ({ children }) => <h1 style={{ fontSize: '1.2em', margin: '8px 0 4px 0', fontWeight: 'bold' }}>{children}</h1>,
+                     h2: ({ children }) => <h2 style={{ fontSize: '1.1em', margin: '6px 0 4px 0', fontWeight: 'bold' }}>{children}</h2>,
+                     h3: ({ children }) => <h3 style={{ fontSize: '1em', margin: '4px 0 2px 0', fontWeight: 'bold' }}>{children}</h3>,
+                     ul: ({ children }) => <ul style={{ margin: '4px 0', paddingLeft: '16px' }}>{children}</ul>,
+                     ol: ({ children }) => <ol style={{ margin: '4px 0', paddingLeft: '16px' }}>{children}</ol>,
+                     li: ({ children }) => <li style={{ margin: '2px 0' }}>{children}</li>,
+                     code: ({ children, className }) => {
+                       const isInline = !className;
+                       return isInline ? (
+                         <code style={{ 
+                           backgroundColor: 'var(--neutral-background-strong)', 
+                           padding: '2px 4px', 
+                           borderRadius: '3px',
+                           fontSize: '0.9em',
+                           fontFamily: 'var(--font-code)'
+                         }}>{children}</code>
+                       ) : (
+                         <pre style={{ 
+                           backgroundColor: 'var(--neutral-background-strong)', 
+                           padding: '8px', 
+                           borderRadius: '6px',
+                           overflow: 'auto',
+                           fontSize: '0.85em',
+                           fontFamily: 'var(--font-code)'
+                         }}>
+                           <code>{children}</code>
+                         </pre>
+                       );
+                     },
+                     blockquote: ({ children }) => (
+                       <blockquote style={{ 
+                         borderLeft: '3px solid var(--brand-solid-medium)', 
+                         paddingLeft: '12px', 
+                         margin: '8px 0',
+                         fontStyle: 'italic',
+                         opacity: 0.9
+                       }}>{children}</blockquote>
+                     ),
+                     strong: ({ children }) => <strong style={{ fontWeight: 'bold' }}>{children}</strong>,
+                     em: ({ children }) => <em style={{ fontStyle: 'italic' }}>{children}</em>,
+                     a: ({ href, children }) => (
+                       <a 
+                         href={href} 
+                         target="_blank" 
+                         rel="noopener noreferrer"
+                         style={{ 
+                           color: 'var(--brand-solid-medium)', 
+                           textDecoration: 'underline' 
+                         }}
+                       >
+                         {children}
+                       </a>
+                     )
+                   }}
+                 >
+                   {message.text}
+                 </ReactMarkdown>
+                <div className={styles.sourcesLabel}>
+                  <span className={styles.sourcesText}>Fuentes: {message.sourcesCount || 0}</span>
+                  {message.contextSources && message.contextSources.length > 0 && (
+                    <div className={styles.sourcesTooltip}>
+                      <div className={styles.sourcesPopup}>
+                        {message.contextSources.map((src, idx) => (
+                          <div key={idx} className={styles.sourceItem}>
+                            <div className={styles.sourceKey}>{src.key}</div>
+                            <div className={styles.sourceScore}>
+                              Similitud: {(src.score * 100).toFixed(1)}%
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+                </>
+             ) : (
+               message.text
+             )}
             </div>
           ))}
           
