@@ -25,7 +25,10 @@ export class EmbeddingService {
   private baseUrl: string;
 
   constructor() {
-    this.baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
+    // Priorizar variables de .env.dokploy, luego Next.js, finalmente localhost
+    this.baseUrl = 
+      process.env.NEXT_PUBLIC_BACKEND_BASE_URL ||
+      'http://localhost:8000';
   }
 
   /**
