@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./ProjectList.module.scss";
-import { Icon } from "../components";
+import { Icon } from ".";
 
 export interface Project {
   title: string;

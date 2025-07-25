@@ -1,0 +1,115 @@
+
+services:
+  # Backend Service (FastAPI) - Producción
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+      target: production
+    container_name: portfolio-backend-prod
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/.env.prod
+    environment:
+      - PYTHONPATH=/app
+      - ENVIRONMENT=production
+      - PROJECT_NAME={{ project.PROJECT_NAME }}
+      - VERSION={{ project.VERSION }}
+      - OPENROUTER_API_KEY={{ project.OPENROUTER_API_KEY }}
+      - ALLOWED_ORIGINS={{ project.ALLOWED_ORIGINS }}
+      - REDIS_URL=redis://redis:6379/0
+    volumes:
+      # Solo montar vectorstores para persistencia
+      - ./backend/vectorstores:/app/vectorstores
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    networks:
+      - portfolio-network
+    depends_on:
+      - redis
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.1'
+
+  # Frontend Service (Next.js) - Producción
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: runner
+    container_name: portfolio-frontend-prod
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./frontend/.env.production
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL={{ project.NEXT_PUBLIC_API_URL }}
+      - NEXT_PUBLIC_OPENROUTER_API_KEY={{ project.NEXT_PUBLIC_OPENROUTER_API_KEY }}
+      - NEXT_PUBLIC_DOMAIN={{ project.NEXT_PUBLIC_DOMAIN }}
+      - NEXT_TELEMETRY_DISABLED=1
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - portfolio-network
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.3'
+        reservations:
+          memory: 128M
+          cpus: '0.1'
+
+  # Redis Service
+  redis:
+    image: redis:7-alpine
+    container_name: portfolio-redis-prod
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks:
+      - portfolio-network
+    command: redis-server --appendonly yes --maxmemory 128mb --maxmemory-policy allkeys-lru
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+          cpus: '0.1'
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: portfolio-nginx-prod
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.prod.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/ssl/certs:ro
+    depends_on:
+      - frontend
+      - backend
+    restart: unless-stopped
+    networks:
+      - portfolio-network
+
+volumes:
+  redis_data:
+    driver: local
+
+networks:
+  portfolio-network:
+    driver: bridge

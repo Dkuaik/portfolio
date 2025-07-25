@@ -1,0 +1,58 @@
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# Environment
+.env*
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+.tox
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.mypy_cache
+.pytest_cache
+.hypothesis
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Virtual environments
+venv/
+env/
+.venv/
+.env/
+
+# Build outputs
+dist/
+build/
+*.egg-info/
+
+# Temporary files
+*.tmp
+*.temp
+tmp/
+temp/
