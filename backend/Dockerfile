@@ -1,5 +1,5 @@
 # ---------- Multi-stage build for FastAPI + UV ----------
-FROM python:3.12-slim AS base
+FROM python AS base
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1 \
