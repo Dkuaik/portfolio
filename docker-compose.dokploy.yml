@@ -10,7 +10,7 @@ services:
     env_file:
       - ./backend/.env.dokploy
     ports:
-      - "8000:8888"
+      - "8888:8888"
     environment:
       - PYTHONPATH=/app
       - ENVIRONMENT=production
@@ -38,7 +38,7 @@ services:
     env_file:
       - ./frontend/.env.dokploy
     ports:
-      - "3000:3333"
+      - "3333:3333"
     environment:
       - NODE_ENV=production
       - NEXT_TELEMETRY_DISABLED=1
