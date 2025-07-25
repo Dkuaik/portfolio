@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  # Backend Service (FastAPI)
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+      target: production
+    container_name: portfolio-backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/.env.dokploy
+    environment:
+      - PYTHONPATH=/app
+      - ENVIRONMENT=production
+      - REDIS_URL=redis://redis:6379/0
+    volumes:
+      - ./backend/vectorstores:/app/vectorstores
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    networks:
+      - portfolio-network
+    depends_on:
+      - redis
+
+  # Frontend Service (Next.js)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: portfolio-frontend
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./frontend/.env.dokploy
+    environment:
+      - NODE_ENV=production
+      - NEXT_TELEMETRY_DISABLED=1
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - portfolio-network
+
+  # Redis Service
+  redis:
+    image: redis:7-alpine
+    container_name: portfolio-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks:
+      - portfolio-network
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+
+volumes:
+  redis_data:
+    driver: local
+
+networks:
+  portfolio-network:
+    driver: bridge
