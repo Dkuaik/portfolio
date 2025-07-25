@@ -7,8 +7,6 @@ services:
       dockerfile: Dockerfile
       target: production
     container_name: portfolio-backend
-    ports:
-      - "8000:8000"
     env_file:
       - ./backend/.env.dokploy
     environment:
@@ -35,8 +33,6 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     container_name: portfolio-frontend
-    ports:
-      - "3000:3000"
     env_file:
       - ./frontend/.env.dokploy
     environment:
@@ -52,8 +48,6 @@ services:
   redis:
     image: redis:7-alpine
     container_name: portfolio-redis
-    ports:
-      - "6379:6379"
     volumes:
       - redis_data:/data
     restart: unless-stopped
