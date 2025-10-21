@@ -266,7 +266,10 @@ const Hero = ({ isLoaded }: { isLoaded: boolean }) => {
                     { name: "OpenAI API", icon: "openai" },
                     { name: "LangChain", icon: "langchain" },
                     { name: "Machine Learning", icon: "cpu" },
-                    { name: "NLP", icon: "cpu" }
+                    { name: "NLP", icon: "cpu" },
+                    { name: "Openrouter", icon: "openrouter"},
+                    { name: "MCP", icon: "mcp"},
+                    { name: "Hugging Face", icon: "huggingface"}
                 ]
             },
             { 
@@ -285,7 +288,6 @@ const Hero = ({ isLoaded }: { isLoaded: boolean }) => {
                 techs: [
                     { name: "React", icon: "react" },
                     { name: "Next.js", icon: "nextjs" },
-                    { name: "TypeScript", icon: "typescript" },
                     { name: "JavaScript", icon: "javascript" }
                 ]
             },
@@ -305,7 +307,9 @@ const Hero = ({ isLoaded }: { isLoaded: boolean }) => {
                     { name: "AWS", icon: "aws" },
                     { name: "Docker", icon: "docker" },
                     { name: "Git", icon: "git" },
-                    { name: "Automation", icon: "cpu" }
+                    { name: "Automation", icon: "cpu" },
+                    { name: "Dokploy", icon: "dokploy" },
+                    { name: "n8n", icon: "n8n" }
                 ]
             }
         ];
