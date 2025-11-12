@@ -1,24 +1,29 @@
 'use client';
 
-// Petición para chat con contexto de embeddings
-interface ChatRequest {
+// Petición para búsqueda de embeddings
+interface SearchRequest {
   query: string;
-  context_query?: string;
-  max_context_results?: number;
-  similarity_threshold?: number;
-  model?: string;
-  temperature?: number;
-  max_tokens?: number;
+  max_results?: number;
+  threshold?: number;
 }
 
-// Respuesta del endpoint de chat
-interface ChatResponse {
+// Respuesta del endpoint de búsqueda
+interface SearchResponse {
   query: string;
-  response: string;
-  context_used: Record<string, any>;
+  results: DocumentChunk[];
+  total_results: number;
   execution_time: number;
-  success: boolean;
-  error?: string;
+}
+
+interface DocumentChunk {
+  content: string;
+  metadata: {
+    key: string;
+    source: string;
+    size?: number;
+    last_modified?: string;
+  };
+  score: number;
 }
 
 export class EmbeddingService {
@@ -32,28 +37,24 @@ export class EmbeddingService {
   }
 
   /**
-   * Realiza una consulta al endpoint /api/v1/embeddings/chat
+   * Realiza una búsqueda en los embeddings
    * @param query Consulta del usuario (obligatorio)
-   * @param opts Opciones adicionales para la petición ChatRequest
+   * @param opts Opciones adicionales para la petición SearchRequest
    */
-  async chat(
+  async search(
     query: string,
-    opts: Omit<Partial<ChatRequest>, 'query'> = {}
-  ): Promise<ChatResponse> {
+    opts: Omit<Partial<SearchRequest>, 'query'> = {}
+  ): Promise<SearchResponse> {
     // Valores por defecto según el esquema
-    const body: ChatRequest = {
+    const body: SearchRequest = {
       query,
-      context_query: opts.context_query || query,
-      max_context_results: opts.max_context_results ?? 5,
-      similarity_threshold: opts.similarity_threshold ?? 0.3,
-      model: opts.model || 'google/gemini-2.5-flash-lite-preview-06-17',
-      temperature: opts.temperature ?? 0.7,
-      max_tokens: opts.max_tokens ?? 1000
+      max_results: opts.max_results ?? 5,
+      threshold: opts.threshold ?? 0.3
     };
 
     try {
       const res = await fetch(
-        `${this.baseUrl}/api/v1/embeddings/chat`,
+        `${this.baseUrl}/api/v1/embeddings/search`,
         {
           method: 'POST',
           headers: {
@@ -68,17 +69,15 @@ export class EmbeddingService {
         throw new Error(`HTTP ${res.status}: ${text}`);
       }
 
-      const data: ChatResponse = await res.json();
+      const data: SearchResponse = await res.json();
       return data;
     } catch (err) {
-      console.error('Error en EmbeddingService.chat:', err);
+      console.error('Error en EmbeddingService.search:', err);
       return {
         query,
-        response: '',
-        context_used: {},
-        execution_time: 0,
-        success: false,
-        error: err instanceof Error ? err.message : String(err)
+        results: [],
+        total_results: 0,
+        execution_time: 0
       };
     }
   }

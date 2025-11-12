@@ -8,6 +8,13 @@ const Portfolio = ({ isLoaded }: { isLoaded: boolean }) => {
     // Datos de los proyectos
     const projectsData = [
         {
+            title: "ReviewHunter - Tienda de Afiliación Amazon con IA",
+            description: "Tienda de afiliación con Amazon donde el contenido es generado, gestionado y expuesto con ayuda de flujos de automatización de IA, n8n y análisis de datos. Sistema completo de generación automática de contenido y optimización de conversiones.",
+            tags: ["IA", "n8n", "Automatización", "Amazon Affiliate", "Data Analysis", "Content Generation"],
+            image: "https://www.reviewhunter.store/_next/image?url=%2Fimages%2Fhero.png&w=640&q=75",
+            link: "https://www.reviewhunter.store/",
+        },
+        {
             title: "GUÍA ECOEMS - Banco de Reactivos con IA",
             description: "Diseñé y desarrollé un sistema completo de generación y enriquecimiento de preguntas para preparación de exámenes ECOEMS. Incluye scrapers especializados, normalización de datos con IA, y generación de reactivos sintéticos con LLMs.",
             tags: ["Python", "IA", "Web Scraping", "PostgreSQL", "OpenRouter", "GPT-4"],

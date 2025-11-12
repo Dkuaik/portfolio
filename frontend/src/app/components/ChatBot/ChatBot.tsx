@@ -90,16 +90,24 @@ const ChatBot: React.FC = () => {
     setIsTyping(true);
 
     try {
-      // Llamar al nuevo servicio de embeddings
-      const chatResp = await embeddingService.current.chat(
-        userMessage.text
+      // Llamar al servicio de búsqueda de embeddings
+      const searchResp = await embeddingService.current.search(
+        userMessage.text,
+        { max_results: 5, threshold: 0.3 }
       );
-      // Construir texto de respuesta sin mostrar el contexto en el texto
+
+      // Construir texto de respuesta con los resultados de búsqueda
       let responseText: string;
-      if (chatResp.success) {
-        responseText = chatResp.response;
+      if (searchResp.results && searchResp.results.length > 0) {
+        responseText = `Encontré ${searchResp.total_results} resultados relevantes:\n\n`;
+        searchResp.results.slice(0, 3).forEach((result, index) => {
+          responseText += `**Resultado ${index + 1}:**\n${result.content.substring(0, 500)}${result.content.length > 500 ? '...' : ''}\n\n`;
+        });
+        if (searchResp.total_results > 3) {
+          responseText += `*Y ${searchResp.total_results - 3} resultados más...*`;
+        }
       } else {
-        responseText = `Error: ${chatResp.error || 'Desconocido'}`;
+        responseText = 'No encontré información relevante para tu consulta. ¿Puedes reformular tu pregunta?';
       }
 
       // Actualizar historial de conversación
@@ -108,7 +116,7 @@ const ChatBot: React.FC = () => {
         { role: 'user', content: userMessage.text },
         { role: 'assistant', content: responseText }
       ];
-      
+
       // Mantener solo los últimos 10 intercambios para no exceder límites
       if (newHistory.length > 20) {
         setConversationHistory(newHistory.slice(-20));
@@ -116,13 +124,20 @@ const ChatBot: React.FC = () => {
         setConversationHistory(newHistory);
       }
 
+      // Preparar fuentes de contexto
+      const contextSources = searchResp.results ? searchResp.results.map(result => ({
+        source: result.metadata.source,
+        key: result.metadata.key,
+        score: result.score
+      })) : [];
+
       const botResponse: Message = {
         id: (Date.now() + 1).toString(),
         text: responseText,
         sender: 'bot',
         timestamp: new Date(),
-        sourcesCount: chatResp.success ? (chatResp.context_used.sources?.length ?? 0) : 0,
-        contextSources: chatResp.success ? chatResp.context_used.sources : undefined
+        sourcesCount: searchResp.total_results,
+        contextSources: contextSources
       };
       
       setMessages(prev => [...prev, botResponse]);

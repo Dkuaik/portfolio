@@ -146,7 +146,7 @@ async def chat_with_context(request: ChatRequest):
     Chat with AI using embeddings for context
     """
     start_time = time.time()
-    
+
     try:
         # Unwrap optional fields with defaults
         model = request.model or "google/gemini-2.5-flash-lite-preview-06-17"

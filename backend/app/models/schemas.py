@@ -19,7 +19,7 @@ class SearchRequest(BaseModel):
     """Search request model"""
     query: str = Field(..., description="Search query", min_length=1, max_length=1000)
     max_results: int = Field(5, description="Maximum number of results", ge=1, le=20)
-    threshold: float = Field(0.7, description="Similarity threshold", ge=0.0, le=1.0)
+    threshold: float = Field(0.3, description="Similarity threshold", ge=0.0, le=1.0)
 
 class SearchResponse(BaseModel):
     """Search response model"""
