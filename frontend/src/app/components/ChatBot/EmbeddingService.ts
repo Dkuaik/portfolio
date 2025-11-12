@@ -32,8 +32,7 @@ export class EmbeddingService {
   constructor() {
     // Priorizar variables de .env.dokploy, luego Next.js, finalmente localhost
     this.baseUrl = 
-      'https://portfolio-backend.dkuaik.dev' ||
-      'http://localhost:8000';
+      'https://portfolio-backend.dkuaik.dev';
   }
 
   /**
