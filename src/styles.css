@@ -37,59 +37,6 @@ html {
   scroll-behavior: smooth;
 }
 
-/* ---------------------------------------------------------------------------
-   Background layers. Purely decorative, rendered behind the content.
-   --------------------------------------------------------------------------- */
-
-/* Technical grid, faded out by a radial mask so it never fights the text. */
-.fx-grid {
-  background-image:
-    linear-gradient(to right, currentColor 1px, transparent 1px),
-    linear-gradient(to bottom, currentColor 1px, transparent 1px);
-  background-size: 64px 64px;
-  opacity: 0.4;
-  mask-image: radial-gradient(ellipse 75% 60% at 50% 0%, black 25%, transparent 85%);
-}
-
-/* Two soft accent blooms near the top of the page. */
-.fx-aurora {
-  background:
-    radial-gradient(
-      55% 60% at 12% 0%,
-      color-mix(in oklch, var(--color-accent-500) 20%, transparent),
-      transparent 70%
-    ),
-    radial-gradient(
-      45% 50% at 88% 8%,
-      color-mix(in oklch, var(--color-accent-300) 14%, transparent),
-      transparent 70%
-    );
-}
-
-/* Accent glow that trails the pointer. Coordinates are set from JS. */
-.fx-spotlight {
-  background: radial-gradient(
-    400px circle at var(--mx, 50%) var(--my, -20%),
-    color-mix(in oklch, var(--color-accent-400) 13%, transparent),
-    transparent 70%
-  );
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .fx-aurora {
-    animation: aurora-drift 18s ease-in-out infinite alternate;
-  }
-}
-
-@keyframes aurora-drift {
-  from {
-    transform: translate3d(-2%, 0, 0) scale(1);
-  }
-  to {
-    transform: translate3d(2%, 1.5%, 0) scale(1.08);
-  }
-}
-
 /* Reveal-on-scroll: elements start hidden and are released by the IntersectionObserver. */
 @media (prefers-reduced-motion: no-preference) {
   [data-reveal="pending"] {
