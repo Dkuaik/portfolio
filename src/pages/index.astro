@@ -1,0 +1,33 @@
+---
+import { SwarmLayer } from "../components/AgentSwarm";
+import { BackgroundSection } from "../components/Background";
+import { BackgroundFx } from "../components/BackgroundFx";
+import { ExperienceSection } from "../components/Experience";
+import { Footer } from "../components/Footer";
+import { HeroSection } from "../components/Hero";
+import { NavBar } from "../components/Nav";
+import { StackSection } from "../components/SkillGrid";
+import Base from "../layouts/Base.astro";
+---
+
+<Base>
+  <div class="relative min-h-screen bg-white text-zinc-900 antialiased dark:bg-zinc-950 dark:text-zinc-100">
+    <BackgroundFx client:load />
+
+    <SwarmLayer client:load />
+
+    <NavBar client:load />
+
+    <main class="relative z-10 mx-auto max-w-4xl px-6">
+      <HeroSection client:load />
+
+      <ExperienceSection client:visible />
+
+      <StackSection client:visible />
+
+      <BackgroundSection client:visible />
+    </main>
+
+    <Footer client:visible />
+  </div>
+</Base>

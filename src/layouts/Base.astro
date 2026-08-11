@@ -1,0 +1,59 @@
+---
+import { DICTIONARIES } from "../i18n";
+import { LOCALE } from "../i18n/types";
+import "../styles.css";
+
+const en = DICTIONARIES[LOCALE.EN];
+const ogDescription =
+  "Multi-agent orchestration, MCP tooling, agentic RAG, and on-premise AI infrastructure.";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{en.ui.documentTitle}</title>
+    <meta name="description" content={en.ui.documentDescription} />
+    <meta property="og:title" content={en.ui.documentTitle} />
+    <meta property="og:description" content={ogDescription} />
+    <meta property="og:type" content="profile" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script is:inline>
+      // Applied before first paint to avoid a light-theme flash on dark preference.
+      (() => {
+        const stored = localStorage.getItem("portfolio-theme");
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        if (stored === "dark" || (!stored && prefersDark)) {
+          document.documentElement.classList.add("dark");
+        }
+      })();
+    </script>
+    <script>
+      import { DICTIONARIES } from "../i18n";
+      import { LOCALE_STORAGE_KEY, localeStore } from "../stores/locale";
+      import { THEME, THEME_STORAGE_KEY, themeStore } from "../stores/theme";
+
+      const syncDocument = (): void => {
+        const locale = localeStore.get();
+        const dictionary = DICTIONARIES[locale];
+        document.documentElement.lang = dictionary.htmlLang;
+        document.title = dictionary.ui.documentTitle;
+        document
+          .querySelector('meta[name="description"]')
+          ?.setAttribute("content", dictionary.ui.documentDescription);
+        localStorage.setItem(LOCALE_STORAGE_KEY, locale);
+
+        const theme = themeStore.get();
+        document.documentElement.classList.toggle("dark", theme === THEME.DARK);
+        localStorage.setItem(THEME_STORAGE_KEY, theme);
+      };
+
+      localeStore.subscribe(syncDocument);
+      themeStore.subscribe(syncDocument);
+    </script>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

@@ -1,3 +1,5 @@
+import { Section } from "./Section";
+import { useLocale } from "../hooks/useLocale";
 import { cn } from "../lib/cn";
 import { WORK_KIND, type Position } from "../i18n";
 
@@ -60,5 +62,16 @@ export function Experience({ positions, internshipBadge }: ExperienceProps) {
         />
       ))}
     </div>
+  );
+}
+
+export function ExperienceSection() {
+  const { dictionary } = useLocale();
+  const { profile, ui } = dictionary;
+
+  return (
+    <Section id="experience" index="01" title={ui.sections.experience}>
+      <Experience positions={profile.positions} internshipBadge={ui.internshipBadge} />
+    </Section>
   );
 }

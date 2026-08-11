@@ -1,3 +1,5 @@
+import { Section } from "./Section";
+import { useLocale } from "../hooks/useLocale";
 import type { Education, LanguageSkill } from "../i18n";
 
 interface BackgroundProps {
@@ -44,5 +46,21 @@ export function Background({
         </ul>
       </div>
     </div>
+  );
+}
+
+export function BackgroundSection() {
+  const { dictionary } = useLocale();
+  const { profile, ui } = dictionary;
+
+  return (
+    <Section id="background" index="03" title={ui.sections.background}>
+      <Background
+        education={profile.education}
+        languages={profile.languages}
+        educationLabel={ui.sections.education}
+        languagesLabel={ui.sections.languages}
+      />
+    </Section>
   );
 }

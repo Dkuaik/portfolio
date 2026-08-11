@@ -31,76 +31,27 @@ test("hello world", () => {
 });
 ```
 
+## Project
+
+Static portfolio built with Astro 5 (islands), React 19, Tailwind CSS 4, and
+nanostores. All scripts run through Bun: `bun install`, `bun run dev` (Astro dev
+server), `bun run build`, `bun run preview`, `bun run typecheck`.
+
 ## Frontend
 
-Use HTML imports with `Bun.serve()`. Don't use `vite`. HTML imports fully support React, CSS, Tailwind.
-
-Server:
-
-```ts#index.ts
-import index from "./index.html"
-
-Bun.serve({
-  routes: {
-    "/": index,
-    "/api/users/:id": {
-      GET: (req) => {
-        return new Response(JSON.stringify({ id: req.params.id }));
-      },
-    },
-  },
-  // optional websocket support
-  websocket: {
-    open: (ws) => {
-      ws.send("Hello, world!");
-    },
-    message: (ws, message) => {
-      ws.send(message);
-    },
-    close: (ws) => {
-      // handle close
-    }
-  },
-  development: {
-    hmr: true,
-    console: true,
-  }
-})
-```
-
-HTML files can import .tsx, .jsx or .js files directly and Bun's bundler will transpile & bundle automatically. `<link>` tags can point to stylesheets and Bun's CSS bundler will bundle.
-
-```html#index.html
-<html>
-  <body>
-    <h1>Hello, world!</h1>
-    <script type="module" src="./frontend.tsx"></script>
-  </body>
-</html>
-```
-
-With the following `frontend.tsx`:
-
-```tsx#frontend.tsx
-import React from "react";
-import { createRoot } from "react-dom/client";
-
-// import .css files directly and it works
-import './index.css';
-
-const root = createRoot(document.body);
-
-export default function Frontend() {
-  return <h1>Hello, world!</h1>;
-}
-
-root.render(<Frontend />);
-```
-
-Then, run index.ts
-
-```sh
-bun --hot ./index.ts
-```
-
-For more information, read the Bun API docs in `node_modules/bun-types/docs/**.mdx`.
+- Astro 5 with `output: "static"`; React islands via `@astrojs/react`.
+- Tailwind CSS 4 is wired through the `@tailwindcss/vite` Vite plugin in
+  `astro.config.mjs` (`vite.plugins`). Do NOT add `@astrojs/tailwind` — that is
+  the v3-era integration and is incompatible with Tailwind 4. Keep
+  `src/styles.css` in Tailwind 4 syntax (`@import "tailwindcss"`, `@theme`).
+- Shared cross-island state lives in `src/stores/` (nanostores atoms):
+  locale, theme, and the swarm easter-egg trigger. Components read them through
+  `useLocale` / `useTheme` / `useStore` — never through props drilled from a page.
+- Document side effects (`<html lang>`, `document.title`, meta description,
+  theme class, localStorage persistence) are centralized in `src/layouts/Base.astro`.
+- Locale defaults to English always — never read the browser language. Persisted
+  in localStorage key `portfolio-locale`. Theme uses key `portfolio-theme` with a
+  pre-paint inline script in the layout head to avoid FOUC.
+- Interactive islands use `client:load` above the fold and `client:visible`
+  below it. Static markup with no interactivity stays plain Astro.
+- Use `bun test` for tests.

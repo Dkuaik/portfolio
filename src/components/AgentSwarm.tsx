@@ -1,4 +1,8 @@
 import { useEffect, useRef, useState } from "react";
+import { useStore } from "@nanostores/react";
+
+import { useLocale } from "../hooks/useLocale";
+import { swarmTriggerStore } from "../stores/swarm";
 
 interface AgentPreset {
   label: string;
@@ -159,5 +163,18 @@ export function AgentSwarm({ trigger, spawnMessage, doneMessage }: AgentSwarmPro
         </p>
       )}
     </div>
+  );
+}
+
+export function SwarmLayer() {
+  const trigger = useStore(swarmTriggerStore);
+  const { dictionary } = useLocale();
+
+  return (
+    <AgentSwarm
+      trigger={trigger}
+      spawnMessage={dictionary.ui.swarmSpawn}
+      doneMessage={dictionary.ui.swarmTerminated}
+    />
   );
 }

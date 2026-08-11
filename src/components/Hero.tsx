@@ -1,4 +1,6 @@
 import { GithubIcon, LinkedinIcon, MailIcon } from "./Icons";
+import { useLocale } from "../hooks/useLocale";
+import { useReveal } from "../hooks/useReveal";
 import { LINK_KIND, type ContactLink, type LinkKind, type Profile } from "../i18n";
 
 const LINK_ICONS: Record<LinkKind, typeof MailIcon> = {
@@ -27,8 +29,10 @@ function ContactButton({ link }: { link: ContactLink }) {
 type HeroProps = Pick<Profile, "name" | "title" | "location" | "summary" | "focusAreas" | "links">;
 
 export function Hero({ name, title, location, summary, focusAreas, links }: HeroProps) {
+  const revealRef = useReveal<HTMLElement>();
+
   return (
-    <section id="top" className="py-20 md:py-28">
+    <section id="top" ref={revealRef} className="py-20 md:py-28">
       <p
         data-reveal="pending"
         className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-accent-600 dark:text-accent-400"
@@ -74,5 +78,21 @@ export function Hero({ name, title, location, summary, focusAreas, links }: Hero
         ))}
       </div>
     </section>
+  );
+}
+
+export function HeroSection() {
+  const { dictionary } = useLocale();
+  const { profile } = dictionary;
+
+  return (
+    <Hero
+      name={profile.name}
+      title={profile.title}
+      location={profile.location}
+      summary={profile.summary}
+      focusAreas={profile.focusAreas}
+      links={profile.links}
+    />
   );
 }

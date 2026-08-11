@@ -1,17 +1,17 @@
 {
   "compilerOptions": {
-    // Environment setup & latest features
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "target": "ESNext",
-    "module": "Preserve",
+    "module": "ESNext",
     "moduleDetection": "force",
     "jsx": "react-jsx",
+    "jsxImportSource": "react",
     "allowJs": true,
-    "types": ["bun"],
 
-    // Bundler mode
+    // Bundler mode (matches Astro's Vite pipeline)
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
     "verbatimModuleSyntax": true,
     "noEmit": true,
 
@@ -26,5 +26,6 @@
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false
   },
-  "include": ["src", "build.ts"]
+  "include": ["src", "astro.config.mjs"],
+  "exclude": ["dist"]
 }

@@ -1,3 +1,5 @@
+import { Section } from "./Section";
+import { useLocale } from "../hooks/useLocale";
 import type { SkillGroup } from "../i18n";
 
 export function SkillGrid({ groups }: { groups: SkillGroup[] }) {
@@ -25,5 +27,16 @@ export function SkillGrid({ groups }: { groups: SkillGroup[] }) {
         </section>
       ))}
     </div>
+  );
+}
+
+export function StackSection() {
+  const { dictionary } = useLocale();
+  const { profile, ui } = dictionary;
+
+  return (
+    <Section id="stack" index="02" title={ui.sections.stack}>
+      <SkillGrid groups={profile.skills} />
+    </Section>
   );
 }

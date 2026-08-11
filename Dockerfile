@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-# ---- Build stage: compile the static bundle with Bun -------------------------
+# ---- Build stage: compile the static site with Bun + Astro -------------------
 FROM oven/bun:1.3-alpine AS build
 
 WORKDIR /app
@@ -9,7 +9,8 @@ WORKDIR /app
 COPY package.json bun.lock ./
 RUN bun install --frozen-lockfile
 
-COPY tsconfig.json bunfig.toml build.ts index.html favicon.svg ./
+COPY tsconfig.json astro.config.mjs ./
+COPY public ./public
 COPY src ./src
 
 RUN bun run build

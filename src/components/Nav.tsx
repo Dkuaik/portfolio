@@ -1,8 +1,11 @@
 import { LocaleToggle } from "./LocaleToggle";
 import { ThemeToggle } from "./ThemeToggle";
+import { useLocale } from "../hooks/useLocale";
 import type { LocaleController } from "../hooks/useLocale";
+import { useTheme } from "../hooks/useTheme";
 import type { ThemeController } from "../hooks/useTheme";
 import { THEME } from "../hooks/useTheme";
+import { triggerSwarm } from "../stores/swarm";
 import type { UiStrings } from "../i18n";
 
 interface NavProps {
@@ -52,5 +55,28 @@ export function Nav({ initials, ui, theme, locale, onWordmarkClick }: NavProps) 
         </div>
       </nav>
     </header>
+  );
+}
+
+function initialsOf(name: string): string {
+  return name
+    .split(" ")
+    .map((part) => part[0] ?? "")
+    .join("");
+}
+
+export function NavBar() {
+  const locale = useLocale();
+  const theme = useTheme();
+  const { profile, ui } = locale.dictionary;
+
+  return (
+    <Nav
+      initials={initialsOf(profile.name)}
+      ui={ui}
+      theme={theme}
+      locale={locale}
+      onWordmarkClick={triggerSwarm}
+    />
   );
 }
